@@ -1,0 +1,22 @@
+/* Animations */
+@keyframes a-bm{
+    from {
+        transform: translateY(50%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes a-mt{
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-50%);
+        opacity: 0;
+    }
+}
