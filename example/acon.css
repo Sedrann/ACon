@@ -1,11 +1,43 @@
 /* Animations */
-@keyframes a-bm{
+@keyframes i-bottom{
     from {
         transform: translateY(50%);
         opacity: 0;
     }
     to {
         transform: translateY(0);
+        opacity: 1;
+    }
+}
+@keyframes i-top{
+    from {
+        transform: translateY(-50%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes i-left{
+    from {
+        transform: translateX(-50%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes i-right{
+    from {
+        transform: translateX(50%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
         opacity: 1;
     }
 }
@@ -26,4 +58,12 @@
     opacity: 0;
     transform: translateY(50%);
     -webkit-transform: translateY(50%);
+}
+
+/* Example Styles */
+.acon_container{
+    text-align: center;
+    font-weight: 600;
+    font-size: 2rem;
+    height: 30px;
 }

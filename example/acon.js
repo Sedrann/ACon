@@ -1,29 +1,24 @@
 var Acon = {
     init: function (sentences, selector) {
-        let animDuration = 300;
-        var container = document.querySelector(selector);
+        var animDuration = 300,
+            container = document.querySelector(selector),
+            animDelay = 0;
+
         container.innerHTML = '';
 
-        var animDelay = 0;
         for (let i = 0; i < sentences.length; i++) {
-
-            let userOptions, text, sentence, timeToRead, words, readDelay, direction;
+            let direction = 'bottom';
+            let text, sentence, timeToRead, words, readDelay;
 
             if (sentences[i].constructor === Array) {
-                userOptions = true;
-                for (let o = 1; o < sentences[i].length; o++) {
-
-                }
+                sentence = sentences[i][0]
+                direction = sentences[i][1]
+            } else {
+                sentence = sentences[i];
             }
 
             text = document.createElement('div');
             text.addEventListener('animationend', function () { Acon.destroySentence(this) }, false);
-
-            if (userOptions) {
-                sentence = sentences[i][0];
-            } else {
-                sentence = sentences[i];
-            }
 
             text.id = 'sentence-' + [i];
             text.innerHTML = sentence;
@@ -37,9 +32,9 @@ var Acon = {
             readDelay = timeToRead + animDuration + animDelay;
 
             if (i + 1 != sentences.length) {
-                text.setAttribute('style', 'animation: a-bm ' + animDuration + 'ms ' + animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards, a-mt ' + animDuration + 'ms ' + readDelay + 'ms cubic-bezier(.74,.24,1,.72) forwards;');
+                text.setAttribute('style', 'animation: i-' + direction + ' ' + animDuration + 'ms ' + animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards, a-mt ' + animDuration + 'ms ' + readDelay + 'ms cubic-bezier(.74,.24,1,.72) forwards;');
             } else {
-                text.setAttribute('style', 'animation: a-bm  ' + animDuration + 'ms ' + animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards');
+                text.setAttribute('style', 'animation: i-' + direction + ' ' + animDuration + 'ms ' + animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards');
             }
             container.appendChild(text);
             animDelay = readDelay + animDuration;
@@ -55,10 +50,10 @@ var Acon = {
 }
 
 var test =  [
-    'Hello',
-    'This is a test',
-    'Lalalala',
+    ['Hello', 'bottom', 3000],
+    ['Text from top','top'],
+    'Default text',
     'Still a test',
-    'Ok',
-    'Bye'
+    ['Text from left','left'],
+    'Last sentece'
 ]
