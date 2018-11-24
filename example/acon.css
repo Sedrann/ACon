@@ -20,3 +20,10 @@
         opacity: 0;
     }
 }
+
+/* Needed Styles */
+.acon_container div{
+    opacity: 0;
+    transform: translateY(50%);
+    -webkit-transform: translateY(50%);
+}
