@@ -1,20 +1,28 @@
 var Acon = {
     init: function (sentences, selector) {
-        var animDuration = 300,
-            container = document.querySelector(selector),
-            animDelay = 0;
-
+        _this = this;
+        _this.animDuration = 300;
+        _this.animDelay = 0;
+        container = document.querySelector(selector);
         container.innerHTML = '';
 
+        Acon.createSentences(sentences);
+    },
+    createSentences: function (sentences) {
         for (let i = 0; i < sentences.length; i++) {
-            let direction = 'bottom';
-            let text, sentence, timeToRead, words, readDelay;
+            let iDirection = 'bottom',
+                fDirection = 'bottom',
+                text, sentence, timeToRead, words, readDelay;
 
             if (sentences[i].constructor === Array) {
-                sentence = sentences[i][0]
-                direction = sentences[i][1]
+                sentence = sentences[i][0];
+                iDirection = sentences[i][1];
             } else {
                 sentence = sentences[i];
+            }
+
+            if (sentences[i + 1] && sentences[i + 1].constructor === Array) {
+                fDirection = sentences[i + 1][1];
             }
 
             text = document.createElement('div');
@@ -29,15 +37,15 @@ var Acon = {
             if (timeToRead < 2000) {
                 timeToRead = 2000;
             }
-            readDelay = timeToRead + animDuration + animDelay;
+            readDelay = timeToRead + _this.animDuration + _this.animDelay;
 
             if (i + 1 != sentences.length) {
-                text.setAttribute('style', 'animation: i-' + direction + ' ' + animDuration + 'ms ' + animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards, a-mt ' + animDuration + 'ms ' + readDelay + 'ms cubic-bezier(.74,.24,1,.72) forwards;');
+                text.setAttribute('style', 'animation: i-' + iDirection + ' ' + _this.animDuration + 'ms ' + _this.animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards, f-' + fDirection + ' ' + _this.animDuration + 'ms ' + readDelay + 'ms cubic-bezier(.74,.24,1,.72) forwards;');
             } else {
-                text.setAttribute('style', 'animation: i-' + direction + ' ' + animDuration + 'ms ' + animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards');
+                text.setAttribute('style', 'animation: i-' + iDirection + ' ' + _this.animDuration + 'ms ' + _this.animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards');
             }
             container.appendChild(text);
-            animDelay = readDelay + animDuration;
+            _this.animDelay = readDelay + _this.animDuration;
         }
     },
     destroySentence: function (el) {

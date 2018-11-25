@@ -42,13 +42,46 @@
     }
 }
 
-@keyframes a-mt{
+@keyframes f-bottom{
     from {
         transform: translateY(0);
         opacity: 1;
     }
     to {
         transform: translateY(-50%);
+        opacity: 0;
+    }
+}
+
+@keyframes f-top{
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(50%);
+        opacity: 0;
+    }
+}
+
+@keyframes f-left{
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(50%);
+        opacity: 0;
+    }
+}
+
+@keyframes f-right{
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-50%);
         opacity: 0;
     }
 }
