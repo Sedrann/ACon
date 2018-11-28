@@ -43,7 +43,12 @@ var Acon = {
             text.innerHTML = sentence;
 
             if (sentences[i + 1] && sentences[i + 1].constructor === Array) {
-                fDirection = sentences[i + 1][1];
+                for (let o = 1; o < sentences[i + 1].length; o++) {
+                    if (!typeof sentences[i + 1][o] == 'number' || /\(.*\)/.test(sentences[i + 1][o])) {
+                        fDirection = sentences[i + 1][1];;
+                    }
+                }
+               
             }
             
             if (!timeToRead) {
