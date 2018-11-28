@@ -87,14 +87,14 @@
 }
 
 /* Needed Styles */
-.acon_container div{
+.acon-container div{
     opacity: 0;
     transform: translateY(50%);
     -webkit-transform: translateY(50%);
 }
 
 /* Example Styles */
-.acon_container{
+.acon-container{
     text-align: center;
     font-weight: 600;
     font-size: 2rem;

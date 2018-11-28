@@ -3,6 +3,10 @@ var Acon = {
         _this = this;
         _this.animDuration = 300;
         _this.animDelay = 0;
+
+        if(!selector){
+            selector = ".acon-container";
+        }
         container = document.querySelector(selector);
         container.innerHTML = '';
 
@@ -74,12 +78,3 @@ var Acon = {
         }
     }
 }
-
-var test =  [
-    ['Hello', 'bottom', 100],
-    ['Text from top', 'top', 'console.log("custom function")'],
-    'Default text',
-    'Still a test',
-    ['Text from left','left'],
-    'Last sentece'
-]
