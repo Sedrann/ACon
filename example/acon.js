@@ -25,7 +25,7 @@ var Acon = {
                     if (typeof sentences[i][o] == 'number') {
                         timeToRead = sentences[i][o];
                     } else if (/\(.*\)/.test(sentences[i][o])){
-                        text.addEventListener('animationstart', function () { Acon.initCustomFunction(sentences[i][o]) }, false);
+                        text.addEventListener('animationstart', function () { Acon.initCustomFunction(sentences[i][o], this) }, false);
                     }
                     else {
                         iDirection = sentences[i][o];
@@ -67,15 +67,17 @@ var Acon = {
             el.classList.add('active');
         }
     },
-    initCustomFunction: function (userDefinedFunction) {
-        var tmpFunc = new Function(userDefinedFunction);
-        tmpFunc();
+    initCustomFunction: function (userDefinedFunction, el) {
+        if (!el.classList.contains('active')){
+            var tmpFunc = new Function(userDefinedFunction);
+            tmpFunc();;
+        }
     }
 }
 
 var test =  [
     ['Hello', 'bottom', 100],
-    ['Text from top', 'top', 'console.log("test")'],
+    ['Text from top', 'top', 'console.log("custom function")'],
     'Default text',
     'Still a test',
     ['Text from left','left'],
