@@ -44,8 +44,8 @@ var Acon = {
 
             if (sentences[i + 1] && sentences[i + 1].constructor === Array) {
                 for (let o = 1; o < sentences[i + 1].length; o++) {
-                    if (!typeof sentences[i + 1][o] == 'number' || /\(.*\)/.test(sentences[i + 1][o])) {
-                        fDirection = sentences[i + 1][1];;
+                    if (typeof sentences[i + 1][o] !== 'number' && !/\(.*\)/.test(sentences[i + 1][o])) {
+                        fDirection = sentences[i + 1][1];
                     }
                 }
                

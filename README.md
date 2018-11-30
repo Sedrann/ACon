@@ -1,7 +1,7 @@
 # Acon
 
 Script that animates arrays of sentences inside an alement.
-
+[See an example](https://codepen.io/sedran/pen/aQPbwz)
 
 ## Usage
 
