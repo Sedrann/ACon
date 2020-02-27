@@ -1,4 +1,4 @@
-# Acon
+# acon
 
 Script that animates arrays of sentences inside an alement.
 [See an example](https://codepen.io/sedran/pen/aQPbwz)
@@ -18,7 +18,7 @@ var array =  [
     'Array test'
 ]
 
-Acon.init(array);
+acon.init(array);
 ```
 
 ## Options
@@ -27,7 +27,9 @@ Acon.init(array);
 The init function accepts a second parameter which specifies the selector of the element where the sentences will be animated.
 If there's no selector the default will be the class "acon-container"
 ```javascript
-Acon.init(array,"#myDiv");
+acon.init(array, {
+    selector: '#myDiv'
+});
 ```
 ### Time
 The time that each sentence is shown is calculated by the number of words it has, the minimum time is 2000ms.
