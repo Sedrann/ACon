@@ -17,8 +17,10 @@
 
   var defaults = {
     selector: '.acon-container',
-    delay: 0,
+    minTimeToRead: 2000,
+    defaultDirection: 'bottom',
     animDuration: 300,
+    readDelay: 0,
     animDelay: 0
   }
 
@@ -39,6 +41,7 @@
     }
   }
 
+
   /**
    * Invoke custom function
    * @private
@@ -53,84 +56,186 @@
     }
   }
 
+
   /**
-   * Loop array an create all sentences
-   * @private
-   * @param {Array} sentences
+   * Calculate the time to read sentence
+   * @param {String} sentence 
+   * @returns {Number} ms
+   */
+
+  var timeToRead = (string) => {
+    let ttr = string.split(" ").length * 300;
+    ttr = (ttr > options.minTimeToRead)? ttr : options.minTimeToRead
+    return  ttr
+  }
+
+
+  /**
+  * Get the final direction of the current sentence
+  * @param {Number} index
+  * @returns {String} direction
   */
 
-  var create = (sentences) => {
-    for (let i = 0; i < sentences.length; i++) {
-      let iDirection = 'bottom'
-      let fDirection = 'bottom'
+  var fDirection = (index) => {
+    var fDirection
+    // Check if next sentence exist and if it contains a defined direction
+    if (options.parsedSentences[index + 1] && options.parsedSentences[index + 1].options.iDirection) {
+      fDirection = options.parsedSentences[index + 1].options.iDirection
+    } else {
+      fDirection = options.defaultDirection
+    }
+
+    return fDirection
+  }
+
+
+  /**
+  * Wrap each letter in a span
+  * @private
+  * @param {String} sentence the string to transform
+  * @returns {String} The input splitted by letters
+  */
+
+  var splitChars = (sentence) => {
+    return sentence.replace(/\w|\s/g, "<span>$&</span>")
+  }
+
+
+  /**
+  * Wrap each word in a span
+  * @private
+  * @param {String} sentence the string to transform
+  * @returns {String} The input splitted by words
+  */
+
+
+  var splitWords = (sentence) => {
+    return sentence.replace(/\w+|\s/g, "<span>$&</span>")
+  }
+
+
+  /**
+   * Return formated users or default options
+   * @private
+   * @param {String} sentence
+   * @param {Number} index
+   * @param {Array} options
+   * @returns {Object}  
+   */
+
+  var getOptions = (sentence, sentenceOptions) => {
+    let optionsObject = {}
+
+    if (sentenceOptions) {
+      // Loop through options
+      for (let i = 0; i < sentenceOptions.length; i++) {
+        if (typeof sentenceOptions[i] === 'number') {
+          // If type of option is number store time to read
+          optionsObject.timeToRead = sentenceOptions[i]
+        } else if (/\(.*\)/.test(sentenceOptions[i])) {
+          // If option contains () store custom function
+          optionsObject.function = sentenceOptions[i]
+        } else {
+          // Store initial direction
+          optionsObject.iDirection = sentenceOptions[i]
+        }
+      }
+    } else {
+      // Use default options
+      optionsObject.iDirection = options.defaultDirection
+      optionsObject.function = false
+      optionsObject.timeToRead = timeToRead(sentence)
+    }
+    
+    return optionsObject
+  }
+
+
+  /**
+   * Loop all parsedSentences and create the text element
+   * @private
+  */
+
+  var create = () => {
+    for (let i in options.parsedSentences) {
+      let cSentence = options.parsedSentences[i]
+
+      // Create text element and add its content
       let text = document.createElement('div')
-      let sentence, timeToRead, words, readDelay
+      text.innerHTML = cSentence.sentence
 
-      text.id = 'sentence-' + [i]
+      // Animation listeners: end invokes destroy method / start invoke custom function if defined
       text.addEventListener('animationend', function () { destroySentence(this) }, false)
+      if (cSentence.function) {
+        text.addEventListener('animationstart', function () { initCustomFn(cSentence.function, this) }, false)
+      }
+      
+      // Get fDirection
+      cSentence.options.fDirection = fDirection(Number(i))
 
-      if (sentences[i].constructor === Array) {
-        sentence = sentences[i][0]
+      // Sums up the time to read, the animation duration and the current delay (starts at 0)
+      options.readDelay = cSentence.options.timeToRead + options.animDuration + options.animDelay
 
-        for (let o = 1; o < sentences[i].length; o++) {
-          if (typeof sentences[i][o] == 'number') {
-            timeToRead = sentences[i][o]
-          } else if (/\(.*\)/.test(sentences[i][o])) {
-            text.addEventListener('animationstart', function () { initCustomFn(sentences[i][o], this) }, false)
-          }
-          else {
-            iDirection = sentences[i][o]
-          }
-        }
-
+      // Check if next sentence exist or not and add corresponding animation
+      if (options.parsedSentences[Number(i) + 1]) {
+        text.setAttribute('style', 'animation: i-' + cSentence.options.iDirection + ' ' + options.animDuration + 'ms ' + options.animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards, f-' + cSentence.options.fDirection + ' ' + options.animDuration + 'ms ' + options.readDelay + 'ms cubic-bezier(.74,.24,1,.72) forwards;')
       } else {
-        sentence = sentences[i]
+        text.setAttribute('style', 'animation: i-' + cSentence.options.iDirection + ' ' + options.animDuration + 'ms ' + options.animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards')
       }
 
-      text.innerHTML = sentence
-
-      if (sentences[i + 1] && sentences[i + 1].constructor === Array) {
-        for (let o = 1; o < sentences[i + 1].length; o++) {
-          if (typeof sentences[i + 1][o] !== 'number' && !/\(.*\)/.test(sentences[i + 1][o])) {
-            fDirection = sentences[i + 1][1]
-          }
-        }
-
-      }
-
-      if (!timeToRead) {
-        words = sentence.split(' ').length
-        timeToRead = words * 300
-        if (timeToRead < 2000) {
-          timeToRead = 2000
-        }
-      }
-      readDelay = timeToRead + options.animDuration + options.animDelay
-      if (i + 1 != sentences.length) {
-        text.setAttribute('style', 'animation: i-' + iDirection + ' ' + options.animDuration + 'ms ' + options.animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards, f-' + fDirection + ' ' + options.animDuration + 'ms ' + readDelay + 'ms cubic-bezier(.74,.24,1,.72) forwards;')
-      } else {
-        text.setAttribute('style', 'animation: i-' + iDirection + ' ' + options.animDuration + 'ms ' + options.animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards');
-      }
-
-      var container = document.querySelector(options.selector);
+      // Append text element to parent container
+      let container = document.querySelector(options.selector)
       container.appendChild(text)
-      options.animDelay = readDelay + options.animDuration
+
+      // Increases the animation delay for the next sentence
+      options.animDelay = options.readDelay + options.animDuration
     }
   }
 
+
+  /**
+   * Remove every element inside container
+   * @public
+   */
+
+  acon.destroy = () => {
+    document.querySelector(options.selector).innerHTML = ''
+  }
+
+  
   /**
    * Initialize plugin
    * @public
-   * @param {Array} sentences
    * @param {Object} options User options
    */
 
-  acon.init = function (sentences, customOptions) {
+  acon.init = function (customOptions) {
     // Update options
     options = { ...defaults, ...customOptions }
 
-    // Create sentences
-    create(sentences)
+    // Destroy previous animations
+    acon.destroy()
+
+    // Loop sentences and transform Array into object
+    options.parsedSentences = {}
+    for (let i = 0; i < options.sentences.length; i++) {
+      // Check if sentence contains options
+      if (Array.isArray(options.sentences[i])) {
+        var sentence = options.sentences[i][0]
+        var sentenceOptions = getOptions(sentence, options.sentences[i].slice(1))
+      } else {
+        var sentence = options.sentences[i]
+        var sentenceOptions = getOptions(sentence)
+      }
+
+      options.parsedSentences[i] = {
+        sentence: sentence,
+        options: sentenceOptions
+      }
+    }
+
+    // TODO: check performance for looping twice
+    create()
   }
 
   return acon

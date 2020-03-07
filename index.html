@@ -1,26 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Acon Example</title>
-    <link rel="stylesheet" href="src/acon.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>acon Example</title>
+  <link rel="stylesheet" href="src/acon.css">
 </head>
 <body>
-    <div id="test" class="acon-container"></div>
-    
-    <script src="src/acon.js"></script>
-    <script>
-        var test = [
-                ['Hello', 'bottom', 100],
-                ['Text from top', 'top', 'console.log("custom function")'],
-                'Default text',
-                'Still a test',
-                ['Text from left', 'left'],
-                'Last sentence'
-            ]
-        acon.init(test);
-    </script>
+  <div id="test" class="acon-container"></div>
+  
+  <script src="src/acon.js"></script>
+  <script>
+    acon.init({
+      sentences: [
+        'Ja',
+        ['Hello', 200, 'bottom'],
+        ['Text from top', 'top', 'console.log("custom function")']
+      ],
+      selector: '#test'
+    })
+  </script>
 </body>
 </html>
