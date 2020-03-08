@@ -108,7 +108,6 @@
   * @returns {String} The input splitted by words
   */
 
-
   var splitWords = (sentence) => {
     return sentence.replace(/\w+|\s/g, "<span>$&</span>")
   }
@@ -140,12 +139,12 @@
           optionsObject.iDirection = sentenceOptions[i]
         }
       }
-    } else {
-      // Use default options
-      optionsObject.iDirection = options.defaultDirection
-      optionsObject.function = false
-      optionsObject.timeToRead = timeToRead(sentence)
     }
+
+    // Use default options if some option was not defined
+    if (!optionsObject.iDirection) optionsObject.iDirection = options.defaultDirection
+    if (!optionsObject.function) optionsObject.function = false;
+    if (!optionsObject.timeToRead) optionsObject.timeToRead = timeToRead(sentence)
     
     return optionsObject
   }
@@ -162,7 +161,6 @@
 
       // Create text element and add its content
       let text = document.createElement('div')
-      text.innerHTML = cSentence.sentence
 
       // Animation listeners: end invokes destroy method / start invoke custom function if defined
       text.addEventListener('animationend', function () { destroySentence(this) }, false)
@@ -178,9 +176,9 @@
 
       // Check if next sentence exist or not and add corresponding animation
       if (options.parsedSentences[Number(i) + 1]) {
-        text.setAttribute('style', 'animation: i-' + cSentence.options.iDirection + ' ' + options.animDuration + 'ms ' + options.animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards, f-' + cSentence.options.fDirection + ' ' + options.animDuration + 'ms ' + options.readDelay + 'ms cubic-bezier(.74,.24,1,.72) forwards;')
+        text.setAttribute('style', `animation: i-${cSentence.options.iDirection} ${options.animDuration}ms ${options.animDelay}ms cubic-bezier(0,.18,.12,.68) forwards, f-${cSentence.options.fDirection} ${options.animDuration}ms ${options.readDelay}ms cubic-bezier(.74,.24,1,.72) forwards`)
       } else {
-        text.setAttribute('style', 'animation: i-' + cSentence.options.iDirection + ' ' + options.animDuration + 'ms ' + options.animDelay + 'ms cubic-bezier(0,.18,.12,.68) forwards')
+        text.setAttribute('style', `animation: i-${cSentence.options.iDirection} ${options.animDuration}ms ${options.animDelay}ms cubic-bezier(0,.18,.12,.68) forwards`)
       }
 
       // Append text element to parent container
