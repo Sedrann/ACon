@@ -18,10 +18,11 @@
   var defaults = {
     selector: '.acon-container',
     minTimeToRead: 2000,
-    defaultDirection: 'bottom',
+    direction: 'bottom',
     animDuration: 300,
     readDelay: 0,
-    animDelay: 0
+    animDelay: 0,
+    animateBy: 'sentence'
   }
 
 
@@ -82,7 +83,7 @@
     if (options.parsedSentences[index + 1] && options.parsedSentences[index + 1].options.iDirection) {
       fDirection = options.parsedSentences[index + 1].options.iDirection
     } else {
-      fDirection = options.defaultDirection
+      fDirection = options.direction
     }
 
     return fDirection
@@ -134,17 +135,21 @@
         } else if (/\(.*\)/.test(sentenceOptions[i])) {
           // If option contains () store custom function
           optionsObject.function = sentenceOptions[i]
-        } else {
+        } else if (['bottom','top','right','left'].includes(sentenceOptions[i])){
           // Store initial direction
           optionsObject.iDirection = sentenceOptions[i]
+        } else {
+          // Store animate by
+          optionsObject.animateBy = sentenceOptions[i]
         }
       }
     }
 
     // Use default options if some option was not defined
-    if (!optionsObject.iDirection) optionsObject.iDirection = options.defaultDirection
-    if (!optionsObject.function) optionsObject.function = false;
+    if (!optionsObject.iDirection) optionsObject.iDirection = options.direction
+    if (!optionsObject.function) optionsObject.function = false
     if (!optionsObject.timeToRead) optionsObject.timeToRead = timeToRead(sentence)
+    if (!optionsObject.animateBy) optionsObject.animateBy = options.animateBy
     
     return optionsObject
   }
@@ -161,6 +166,14 @@
 
       // Create text element and add its content
       let text = document.createElement('div')
+      // Check animate by option and invoke functions
+      if (cSentence.animateBy === 'sentence') {
+        text.innerHTML = cSentence.sentence
+      } else if (cSentence.animateBy === 'words') {
+        text.innerHTML = splitWords(cSentence.sentence)
+      } else {
+        text.innerHTML = splitChars(cSentence.sentence)
+      }
 
       // Animation listeners: end invokes destroy method / start invoke custom function if defined
       text.addEventListener('animationend', function () { destroySentence(this) }, false)

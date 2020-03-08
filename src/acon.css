@@ -1,102 +1,114 @@
 /* Animations */
-@keyframes i-bottom{
-    from {
-        transform: translateY(50%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+@keyframes i-bottom {
+  from {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
-@keyframes i-top{
-    from {
-        transform: translateY(-50%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes i-left{
-    from {
-        transform: translateX(-50%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+@keyframes i-top {
+  from {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-@keyframes i-right{
-    from {
-        transform: translateX(50%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+@keyframes i-left {
+  from {
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
-@keyframes f-bottom{
-    from {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(-50%);
-        opacity: 0;
-    }
+@keyframes i-right {
+  from {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
-@keyframes f-top{
-    from {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(50%);
-        opacity: 0;
-    }
+@keyframes f-bottom {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
 }
 
-@keyframes f-left{
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(50%);
-        opacity: 0;
-    }
+@keyframes f-top {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(50%);
+    opacity: 0;
+  }
 }
 
-@keyframes f-right{
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(-50%);
-        opacity: 0;
-    }
+@keyframes f-left {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+}
+
+@keyframes f-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-50%);
+    opacity: 0;
+  }
 }
 
 /* Needed Styles */
-.acon-container div{
-    opacity: 0;
-    transform: translateY(50%);
-    -webkit-transform: translateY(50%);
+.acon-container div {
+  opacity: 0;
+  transform: translateY(50%);
+  -webkit-transform: translateY(50%);
+}
+
+.acon-container div.word {
+  opacity: 1;
+  transform: none;
+}
+
+.acon-container div.word span {
+  opacity: 0;
+  transform: translateY(0);
+  display: inline-block;
+  min-width: 9px;
 }
 
 /* Example Styles */
-.acon-container{
-    text-align: center;
-    font-weight: 600;
-    font-size: 2rem;
-    height: 30px;
+.acon-container {
+  text-align: center;
+  font-weight: 600;
+  font-size: 2rem;
+  height: 30px;
 }
