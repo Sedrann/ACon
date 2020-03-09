@@ -14,9 +14,19 @@
   <script>
     acon.init({
       sentences: [
-        'Hi',
-        ['Hello', 200, 'bottom'],
-        ['Text from top', 'top', 'console.log("custom function")']
+        { 
+          text: 'Hi'
+        },
+        {
+          text: 'Hello',
+          timeToRead: 200,
+          iDirection: 'bottom'
+        },
+        {
+          text: 'Text from top',
+          iDirection: 'top',
+          function: 'console.log("custom function")'
+        },
       ],
       selector: '#test'
     })
