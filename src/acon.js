@@ -167,9 +167,9 @@
       // Create text element and add its content
       let text = document.createElement('div')
       // Check animate by option and invoke functions
-      if (cSentence.animateBy === 'sentence') {
+      if (cSentence.options.animateBy === 'sentence') {
         text.innerHTML = cSentence.sentence
-      } else if (cSentence.animateBy === 'words') {
+      } else if (cSentence.options.animateBy === 'words') {
         text.innerHTML = splitWords(cSentence.sentence)
       } else {
         text.innerHTML = splitChars(cSentence.sentence)
