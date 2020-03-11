@@ -17,7 +17,7 @@
 
   var defaults = {
     selector: '.acon-container',
-    minTimeToRead: 2000,
+    minTimeToRead: 1000,
     direction: 'bottom',
     animDuration: 300,
     readDelay: 0,
@@ -34,11 +34,13 @@
    * @param {Node} element el to remove
    */
 
-  var destroySentence = (el) => {
-    if (el.classList.contains('active')) {
-      el.parentElement.removeChild(el)
+  var destroySentence = (event) => {
+    if (event.target.classList.contains('active') || event.target.classList.contains('active') && event.target.nextSibling === null) {
+      event.target.parentElement.removeChild(event.target)
+    } else if (event.target.matches('div')) {
+      event.target.classList.add('active')
     } else {
-      el.classList.add('active')
+      event.target.parentElement.classList.add('active')
     }
   }
 
@@ -89,7 +91,7 @@
     return fDirection
   }
 
-
+  
   /**
   * Wrap each letter in a span
   * @private
@@ -98,7 +100,7 @@
   */
 
   var splitChars = (sentence) => {
-    return sentence.replace(/\w|\s/g, "<span>$&</span>")
+    return sentence.replace(/[a-zA-ZÀ-ÿ\d\u00f1\u00d1\!¡@#$´%^¨&*()_+\-=\[\]{}~;':"\\|,.<>\/?]|\s/g, "<span>$&</span>");
   }
 
 
@@ -110,7 +112,7 @@
   */
 
   var splitWords = (sentence) => {
-    return sentence.replace(/\w+|\s/g, "<span>$&</span>")
+    return sentence.replace(/[a-zA-ZÀ-ÿ\d\u00f1\u00d1\!¡@#$´%^¨&*()_+\-=\[\]{}~;':"\\|,.<>\/?]+|\s/g, "<span>$&</span>")
   }
 
 
@@ -125,8 +127,24 @@
     if (!sentence.function) sentence.function = false;
     if (!sentence.timeToRead) sentence.timeToRead = timeToRead(sentence.text);
     if (!sentence.animateBy) sentence.animateBy = options.animateBy;
-  };
+  }
 
+  /**
+   * Add animation style to every child node
+   * @private
+   * @param {Object} sentence
+   * @param {Node} parentElement contains the child nodes
+   */
+
+  var animateNodes = (sentence, parentElement) => {
+    parentElement.classList.add('word')
+    let childs = Array.prototype.slice.call(parentElement.childNodes)
+    let wordDelay = options.animDelay
+    childs.forEach(function(word, index) {
+      word.setAttribute('style', `animation: i-${sentence.iDirection} ${options.animDuration}ms ${wordDelay}ms cubic-bezier(0,.18,.12,.68) forwards`)
+      wordDelay = options.animDelay + (sentence.timeToRead / childs.length -1 ) * (index + 1)
+    })
+  }
 
   /**
    * Loop all parsedSentences and create the text element
@@ -152,7 +170,7 @@
       }
 
       // Animation listeners: end invokes destroy method / start invoke custom function if defined
-      text.addEventListener('animationend', function () { destroySentence(this) }, false)
+      text.addEventListener('animationend', function () { destroySentence(event) }, false)
       if (cSentence.function) {
         text.addEventListener('animationstart', function () { initCustomFn(cSentence.function, this) }, false)
       }
@@ -165,9 +183,19 @@
 
       // Check if next sentence exist or not and add corresponding animation
       if (options.sentences[Number(i) + 1]) {
-        text.setAttribute('style', `animation: i-${cSentence.iDirection} ${options.animDuration}ms ${options.animDelay}ms cubic-bezier(0,.18,.12,.68) forwards, f-${cSentence.fDirection} ${options.animDuration}ms ${options.readDelay}ms cubic-bezier(.74,.24,1,.72) forwards`)
+        if (cSentence.animateBy === 'sentence') {
+          text.setAttribute('style', `animation: i-${cSentence.iDirection} ${options.animDuration}ms ${options.animDelay}ms cubic-bezier(0,.18,.12,.68) forwards, f-${cSentence.fDirection} ${options.animDuration}ms ${options.readDelay}ms cubic-bezier(.74,.24,1,.72) forwards`)
+        } else {
+          animateNodes(cSentence, text)
+          text.setAttribute('style', `animation: f-${cSentence.fDirection} ${options.animDuration}ms ${options.readDelay}ms cubic-bezier(.74,.24,1,.72) forwards`)
+        }
       } else {
-        text.setAttribute('style', `animation: i-${cSentence.iDirection} ${options.animDuration}ms ${options.animDelay}ms cubic-bezier(0,.18,.12,.68) forwards`)
+        if (cSentence.animateBy === 'sentence') {
+          text.setAttribute('style', `animation: i-${cSentence.iDirection} ${options.animDuration}ms ${options.animDelay}ms cubic-bezier(0,.18,.12,.68) forwards`)
+        } else {
+          animateNodes(cSentence, text)
+        }
+
       }
 
       // Append text element to parent container
