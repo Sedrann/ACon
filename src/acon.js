@@ -9,7 +9,7 @@
     root.acon = factory(root)
   }
 })(typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : this, function (window) {
-  'use strict';
+  'use strict'
 
   // Variables
   var acon = {}
@@ -54,7 +54,7 @@
 
   var initCustomFn = (fn, el) => {
     if (!el.classList.contains("active")) {
-      var tmpFunc = new Function(fn);
+      var tmpFunc = new Function(fn)
       tmpFunc()
     }
   }
@@ -67,7 +67,7 @@
    */
 
   var timeToRead = (string) => {
-    let ttr = string.split(" ").length * 300;
+    let ttr = string.split(" ").length * 300
     ttr = (ttr > options.minTimeToRead)? ttr : options.minTimeToRead
     return  ttr
   }
@@ -100,7 +100,7 @@
   */
 
   var splitChars = (sentence) => {
-    return sentence.replace(/[a-zA-ZÀ-ÿ\d\u00f1\u00d1\!¡@#$´%^¨&*()_+\-=\[\]{}~;':"\\|,.<>\/?]|\s/g, "<span>$&</span>");
+    return sentence.replace(/[a-zA-ZÀ-ÿ\d\u00f1\u00d1\!¡@#$´%^¨&*()_+\-=\[\]{}~;':"\\|,.<>\/?]|\s/g, '<span>$&</span>')
   }
 
 
@@ -112,7 +112,7 @@
   */
 
   var splitWords = (sentence) => {
-    return sentence.replace(/[a-zA-ZÀ-ÿ\d\u00f1\u00d1\!¡@#$´%^¨&*()_+\-=\[\]{}~;':"\\|,.<>\/?]+|\s/g, "<span>$&</span>")
+    return sentence.replace(/[a-zA-ZÀ-ÿ\d\u00f1\u00d1\!¡@#$´%^¨&*()_+\-=\[\]{}~;':"\\|,.<>\/?]+|\s/g, '<span>$&</span>')
   }
 
 
@@ -123,10 +123,29 @@
    */
 
   var setDefaults = sentence => {
-    if (!sentence.iDirection) sentence.iDirection = options.direction;
-    if (!sentence.function) sentence.function = false;
-    if (!sentence.timeToRead) sentence.timeToRead = timeToRead(sentence.text);
-    if (!sentence.animateBy) sentence.animateBy = options.animateBy;
+    //TODO: improve conditionals
+    if (!sentence.iDirection) {
+      sentence.iDirection = options.direction
+    } else if (!/bottom|top|right|left/.test(sentence.iDirection)) {
+      console.warn(`acon: ${sentence.direction} is not a valid value for iDirection, using default`)
+      sentence.iDirection = options.direction
+    }
+
+    if (!sentence.timeToRead) { 
+      sentence.timeToRead = timeToRead(sentence.text)
+    } else if (!(sentence.timeToRead >= 0)) {
+      console.warn(`acon: ${sentence.timeToRead} is not a valid value for timeToRead, using default`)
+      sentence.timeToRead = timeToRead(sentence.text)
+    }
+
+    if (!sentence.animateBy) {
+      sentence.animateBy = options.animateBy
+    } else if (!/sentence|words|chars/.test(sentence.animateBy)) {
+      console.warn(`acon: ${sentence.animateBy} is not a valid value for animateBy, using default`)
+      sentence.animateBy = options.animateBy
+    }
+
+    if (!sentence.function) sentence.function = false
   }
 
   /**
@@ -152,12 +171,16 @@
   */
 
   var create = () => {
+    if (!options.sentences) {
+      console.warn('acon: No defined sentences were found')
+    }
+
     for (let i in options.sentences) {
       let cSentence = options.sentences[i]
       
       // Set defaults options if some option is missing
       setDefaults(cSentence)
-
+      
       // Create text element and add its content
       let text = document.createElement('div')
       // Check animate by option and invoke functions
@@ -179,7 +202,7 @@
       cSentence.fDirection = fDirection(Number(i))
 
       // Sums up the time to read, the animation duration and the current delay (starts at 0)
-      options.readDelay = cSentence.timeToRead + options.animDuration + options.animDelay
+      options.readDelay = Number(cSentence.timeToRead) + options.animDuration + options.animDelay
 
       // Check if next sentence exist or not and add corresponding animation
       if (options.sentences[Number(i) + 1]) {
