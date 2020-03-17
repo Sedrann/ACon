@@ -1,0 +1,24 @@
+{
+  "name": "acon",
+  "version": "1.0.0",
+  "description": "Animate array of sentences",
+  "main": "dist/acon.min.js",
+  "style": "dist/acon.min.css",
+  "scripts": {
+    "scss": "node-sass  --include-path scss src/scss/acon.scss dist/acon.min.css --output-style compressed",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sedrann/acon.git"
+  },
+  "author": "Andrés Sánchez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sedrann/acon/issues"
+  },
+  "homepage": "https://github.com/Sedrann/acon#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0"
+  }
+}

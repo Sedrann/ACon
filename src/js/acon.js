@@ -67,7 +67,8 @@
    */
 
   var timeToRead = (string) => {
-    let ttr = string.split(" ").length * 300
+    // Ensure value is a string before split
+    let ttr = String(string).split(" ").length * 300
     ttr = (ttr > options.minTimeToRead)? ttr : options.minTimeToRead
     return  ttr
   }
@@ -127,21 +128,21 @@
     if (!sentence.iDirection) {
       sentence.iDirection = options.direction
     } else if (!/bottom|top|right|left/.test(sentence.iDirection)) {
-      console.warn(`acon: ${sentence.direction} is not a valid value for iDirection, using default`)
+      console.warn(`acon: using default iDirection. (invalid value: ${sentence.direction})`)
       sentence.iDirection = options.direction
     }
 
     if (!sentence.timeToRead) { 
       sentence.timeToRead = timeToRead(sentence.text)
     } else if (!(sentence.timeToRead >= 0)) {
-      console.warn(`acon: ${sentence.timeToRead} is not a valid value for timeToRead, using default`)
+      console.warn(`acon: using default timeToRead. (invalid value: ${sentence.timeToRead})`)
       sentence.timeToRead = timeToRead(sentence.text)
     }
 
     if (!sentence.animateBy) {
       sentence.animateBy = options.animateBy
     } else if (!/sentence|words|chars/.test(sentence.animateBy)) {
-      console.warn(`acon: ${sentence.animateBy} is not a valid value for animateBy, using default`)
+      console.warn(`acon: using default animateBy. (invalid value: ${sentence.animateBy})`)
       sentence.animateBy = options.animateBy
     }
 
@@ -172,12 +173,18 @@
 
   var create = () => {
     if (!options.sentences) {
-      console.warn('acon: No defined sentences were found')
+      console.error('acon: No defined sentences were found')
     }
 
     for (let i in options.sentences) {
       let cSentence = options.sentences[i]
-      
+
+      // 
+      if (!cSentence.text) {
+        console.warn(`acon: skipped sentence: ${Number(i) + 1} (text is undefined)`)
+        continue
+      }
+
       // Set defaults options if some option is missing
       setDefaults(cSentence)
       
