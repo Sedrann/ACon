@@ -6,7 +6,7 @@
   "style": "dist/acon.min.css",
   "scripts": {
     "scss": "node-sass  --include-path scss src/scss/acon.scss dist/acon.min.css --output-style compressed",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "js": "uglifyjs -o dist/acon.min.js src/js/acon.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/Sedrann/acon#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0"
+    "node-sass": "^4.13.1"
+  },
+  "dependencies": {
+    "uglify-es": "^3.3.9"
   }
 }
