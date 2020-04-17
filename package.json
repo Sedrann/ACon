@@ -1,23 +1,23 @@
 {
-  "name": "acon",
+  "name": "anitext",
   "version": "1.0.0",
-  "description": "Animate array of sentences",
-  "main": "dist/acon.min.js",
-  "style": "dist/acon.min.css",
+  "description": "Simply animate texts",
+  "main": "dist/anitext.min.js",
+  "style": "dist/anitext.min.css",
   "scripts": {
-    "scss": "node-sass  --include-path scss src/scss/acon.scss dist/acon.min.css --output-style compressed",
-    "js": "uglifyjs -o dist/acon.min.js src/js/acon.js"
+    "scss": "node-sass  --include-path scss src/scss/anitext.scss dist/anitext.min.css --output-style compressed",
+    "js": "uglifyjs -o dist/anitext.min.js src/js/anitext.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sedrann/acon.git"
+    "url": "git+https://github.com/Sedrann/anitext.git"
   },
   "author": "Andrés Sánchez",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Sedrann/acon/issues"
+    "url": "https://github.com/Sedrann/anitext/issues"
   },
-  "homepage": "https://github.com/Sedrann/acon#readme",
+  "homepage": "https://github.com/Sedrann/anitext#readme",
   "devDependencies": {
     "node-sass": "^4.13.1"
   },

@@ -6,17 +6,17 @@
   } else if (typeof exports === 'object') {
     module.exports = factory(root)
   } else {
-    root.acon = factory(root)
+    root.anitext = factory(root)
   }
 })(typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : this, function (window) {
   'use strict'
 
   // Variables
-  var acon = {}
+  var anitext = {}
   var options
 
   var defaults = {
-    selector: '.acon-container',
+    selector: '.anitext-container',
     minTimeToRead: 1000,
     direction: 'bottom',
     animDuration: 300,
@@ -128,21 +128,21 @@
     if (!sentence.iDirection) {
       sentence.iDirection = options.direction
     } else if (!/bottom|top|right|left/.test(sentence.iDirection)) {
-      console.warn(`acon: using default iDirection. (invalid value: ${sentence.direction})`)
+      console.warn(`anitext: using default iDirection. (invalid value: ${sentence.direction})`)
       sentence.iDirection = options.direction
     }
 
     if (!sentence.timeToRead) { 
       sentence.timeToRead = timeToRead(sentence.text)
     } else if (!(sentence.timeToRead >= 0)) {
-      console.warn(`acon: using default timeToRead. (invalid value: ${sentence.timeToRead})`)
+      console.warn(`anitext: using default timeToRead. (invalid value: ${sentence.timeToRead})`)
       sentence.timeToRead = timeToRead(sentence.text)
     }
 
     if (!sentence.animateBy) {
       sentence.animateBy = options.animateBy
     } else if (!/sentence|words|chars/.test(sentence.animateBy)) {
-      console.warn(`acon: using default animateBy. (invalid value: ${sentence.animateBy})`)
+      console.warn(`anitext: using default animateBy. (invalid value: ${sentence.animateBy})`)
       sentence.animateBy = options.animateBy
     }
 
@@ -173,7 +173,7 @@
 
   var create = () => {
     if (!options.sentences) {
-      console.error('acon: No defined sentences were found')
+      console.error('anitext: No defined sentences were found')
     }
 
     for (let i in options.sentences) {
@@ -181,7 +181,7 @@
 
       // 
       if (!cSentence.text) {
-        console.warn(`acon: skipped sentence: ${Number(i) + 1} (text is undefined)`)
+        console.warn(`anitext: skipped sentence: ${Number(i) + 1} (text is undefined)`)
         continue
       }
 
@@ -243,7 +243,7 @@
    * @public
    */
 
-  acon.destroy = () => {
+  anitext.destroy = () => {
     document.querySelector(options.selector).innerHTML = ''
   }
 
@@ -254,16 +254,16 @@
    * @param {Object} options User options
    */
 
-  acon.init = function (customOptions) {
+  anitext.init = function (customOptions) {
     // Update options
     options = { ...defaults, ...customOptions }
 
     // Destroy previous animations
-    acon.destroy()
+    anitext.destroy()
 
     // Create sentences
     create()
   }
 
-  return acon
+  return anitext
 })
